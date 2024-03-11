@@ -197,20 +197,21 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backupButtonActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        int selectedFile = chooser.showOpenDialog(this);
+         JFileChooser chooser = new JFileChooser();
+        int selectedFile = chooser.showSaveDialog(this);
         if (selectedFile == JFileChooser.APPROVE_OPTION) {
             fileName = chooser.getSelectedFile().getPath();
         }
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
-            this.list = (ArrayList<CD>) ois.readObject();
-            ois.close();
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            oos.writeObject(list);
+            oos.close();
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, "Error backup data: " + ex.getMessage());
-        } catch (IOException | ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, "Error backup data: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error restore data: " + ex.getMessage());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error restore data: " + ex.getMessage());
         }
-        fillTable(list);
+        
+        
     }//GEN-LAST:event_backupButtonActionPerformed
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
@@ -231,19 +232,20 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newCDButtonActionPerformed
 
     private void restoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreButtonActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        int selectedFile = chooser.showSaveDialog(this);
+       JFileChooser chooser = new JFileChooser();
+        int selectedFile = chooser.showOpenDialog(this);
         if (selectedFile == JFileChooser.APPROVE_OPTION) {
             fileName = chooser.getSelectedFile().getPath();
         }
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            oos.writeObject(list);
-            oos.close();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            this.list = (ArrayList<CD>) ois.readObject();
+            ois.close();
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, "Error restore data: " + ex.getMessage());
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error restore data: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Error backup data: " + ex.getMessage());
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Error backup data: " + ex.getMessage());
         }
+        fillTable(list);
     }//GEN-LAST:event_restoreButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
