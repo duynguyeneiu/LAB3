@@ -4,14 +4,14 @@
  */
 package com.mycompany.cdstore;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
  *
  * @author Student
  */
-public class CD {
-
+public class CD implements Serializable{
     private String id;
     private String collection;
     private String type;
@@ -22,7 +22,7 @@ public class CD {
     public CD() {
     }
 
-    public CD(String id, String collection, String type, String title, double price, int year) {
+    public CD(String id, String title, String collection, String type, double price, int year) {
         this.id = id;
         this.collection = collection;
         this.type = type;
@@ -113,4 +113,4 @@ public class CD {
         System.out.println(id + "-" + collection + "-" + type + "-" + title + "-" + price + "-" + year);
     }
 
-}
+} 
